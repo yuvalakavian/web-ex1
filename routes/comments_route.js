@@ -14,8 +14,11 @@ router.post('/', async (req, res) => {
 });
 
 // Get all comments
+// Optional: commentID filter
 router.get('/', async (req, res) => {
-  const comments = await Comment.find();
+  const commentID = req.query.comment;
+  const filter = commentID ? { commentID } : {};
+  const comments = await Comment.find(filter);
   res.send(comments);
 });
 
