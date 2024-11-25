@@ -39,7 +39,7 @@ GET http://localhost:3000/comments
 
 ###
 
-GET http://localhost:3000/comments?comment=67406bd5252a1b0d5d4c8593
+GET http://localhost:3000/comments/67406bd5252a1b0d5d4c8593
 
 ###
 
