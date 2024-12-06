@@ -1,61 +1,18 @@
 const express = require('express');
 const Comment = require('../models/comment');
 const router = express.Router();
+const commentsController = require("../controllers/comments_controller");
 
-// Add a new comment
-router.post('/', async (req, res) => {
-  try {
-    const comment = new Comment(req.body);
-    await comment.save();
-    res.status(201).send(comment);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.post("/", commentsController.createComment);
 
-// Get all comments
-router.get('/', async (req, res) => {
-  const comments = await Comment.find();
-  res.send(comments);
-});
+router.get("/", commentsController.getAllComments);
 
-// Get comment by ID
-router.get('/:commentID', async (req, res) => {
-  try {
-    const comment = await Comment.findById(req.params.commentID);
-    if (!comment) return res.status(404).send();
-    res.send(comment);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.get("/:id", commentsController.getCommentById);
 
-// Get comments by post ID
-router.get('/post/:postsID', async (req, res) => {
-  const comments = await Comment.find({ postsID: req.params.postsID });
-  res.send(comments);
-});
+router.get("/post/:id", commentsController.getCommentByPostId);
 
-// Update a comment
-router.put('/:commentID', async (req, res) => {
-  try {
-    const comment = await Comment.findByIdAndUpdate(req.params.commentID, req.body, { new: true, runValidators: true });
-    if (!comment) return res.status(404).send();
-    res.send(comment);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.put("/:id", commentsController.updateComment);
 
-// Delete a comment
-router.delete('/:commentID', async (req, res) => {
-  try {
-    const comment = await Comment.findByIdAndDelete(req.params.commentID);
-    if (!comment) return res.status(404).send();
-    res.send(comment);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.delete("/:id", commentsController.deleteComment);
 
 module.exports = router;

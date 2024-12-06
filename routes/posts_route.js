@@ -1,47 +1,13 @@
 const express = require('express');
-const Post = require('../models/post');
 const router = express.Router();
+const postsController = require("../controllers/posts_controller");
 
-// Add a new post
-router.post('/', async (req, res) => {
-  try {
-    const post = new Post(req.body);
-    await post.save();
-    res.status(201).send(post);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.get("/", postsController.getAllPosts);
 
-// Get all posts
-// Optional: senderID filter
-router.get('/', async (req, res) => {
-  const senderID = req.query.sender;
-  const filter = senderID ? { senderID } : {};
-  const posts = await Post.find(filter);
-  res.send(posts);
-});
+router.get("/:id", postsController.getPostById);
 
-// Get post by ID
-router.get('/:postsID', async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.postsID);
-    if (!post) return res.status(404).send();
-    res.send(post);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.post("/", postsController.createPost);
 
-// Update a post
-router.put('/:postsID', async (req, res) => {
-  try {
-    const post = await Post.findByIdAndUpdate(req.params.postsID, req.body, { new: true, runValidators: true });
-    if (!post) return res.status(404).send();
-    res.send(post);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.put("/:id", postsController.updatePost);
 
 module.exports = router;
