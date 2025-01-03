@@ -39,11 +39,11 @@ GET http://localhost:3000/comments
 
 ###
 
-GET http://localhost:3000/comments/6777be6b5d9bfaed4c7c1ee7
+GET http://localhost:3000/comments/6777e6728638046b9c6f4430
 
 ###
 
-GET http://localhost:3000/comments/post/6777be3b5d9bfaed4c7c1ee0
+GET http://localhost:3000/comments?post=6777be3b5d9bfaed4c7c1ee0
 
 ###
 
