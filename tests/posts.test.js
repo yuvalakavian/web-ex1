@@ -1,14 +1,13 @@
 const request = require("supertest");
-
 const initApp = require("../server");
 const mongoose = require("mongoose");
-const postModel = require("../models/post");
+const PostModel = require("../models/post");
 
 var app;
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
-  await postModel.deleteMany();
+  await PostModel.deleteMany();
 });
 
 afterAll((done) => {
@@ -17,19 +16,20 @@ afterAll((done) => {
   done();
 });
 
-let postId = "";
-describe("Posts Tests", () => {
-  test("Posts test get all", async () => {
+describe("Post Controller Tests", () => {
+  let postId = "";
+
+  test("Get all posts (empty)", async () => {
     const response = await request(app).get("/posts");
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(0);
   });
 
-  test("Test Create Post", async () => {
+  test("Create a post", async () => {
     const response = await request(app).post("/posts").send({
       title: "Test Post",
       content: "Test Content",
-      senderID: "TestOwner"
+      senderID: "TestOwner",
     });
     expect(response.statusCode).toBe(201);
     expect(response.body.title).toBe("Test Post");
@@ -38,8 +38,16 @@ describe("Posts Tests", () => {
     postId = response.body._id;
   });
 
-  test("Test get post by senderID", async () => {
-    const response = await request(app).get("/posts?senderID=TestOwner");
+  test("Get post by ID", async () => {
+    const response = await request(app).get(`/posts/${postId}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.title).toBe("Test Post");
+    expect(response.body.content).toBe("Test Content");
+    expect(response.body.senderID).toBe("TestOwner");
+  });
+
+  test("Get posts by senderID", async () => {
+    const response = await request(app).get("/posts?sender=TestOwner");
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
     expect(response.body[0].title).toBe("Test Post");
@@ -47,15 +55,7 @@ describe("Posts Tests", () => {
     expect(response.body[0].senderID).toBe("TestOwner");
   });
 
-  test("Test get post by id", async () => {
-    const response = await request(app).get("/posts/" + postId);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.title).toBe("Test Post");
-    expect(response.body.content).toBe("Test Content");
-    expect(response.body.senderID).toBe("TestOwner");
-  });
-
-  test("Test Create Post 2", async () => {
+  test("Create another post", async () => {
     const response = await request(app).post("/posts").send({
       title: "Test Post 2",
       content: "Test Content 2",
@@ -64,17 +64,33 @@ describe("Posts Tests", () => {
     expect(response.statusCode).toBe(201);
   });
 
-  test("Posts test get all 2", async () => {
+  test("Get all posts (non-empty)", async () => {
     const response = await request(app).get("/posts");
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
   });
 
-  test("Test Create Post fail", async () => {
+  test("Create post fail (missing fields)", async () => {
     const response = await request(app).post("/posts").send({
-      title: "Test Post 2",
-      content: "Test Content 2",
+      title: "Incomplete Post",
     });
     expect(response.statusCode).toBe(400);
+  });
+
+  test("Update post", async () => {
+    const response = await request(app).put(`/posts/${postId}`).send({
+      title: "Updated Test Post",
+      content: "Updated Content",
+    });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.title).toBe("Updated Test Post");
+    expect(response.body.content).toBe("Updated Content");
+  });
+
+  test("Get updated post by ID", async () => {
+    const response = await request(app).get(`/posts/${postId}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.title).toBe("Updated Test Post");
+    expect(response.body.content).toBe("Updated Content");
   });
 });
