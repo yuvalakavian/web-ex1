@@ -1,4 +1,3 @@
-
 ###
 
 GET http://localhost:3000/posts
@@ -39,11 +38,11 @@ GET http://localhost:3000/comments
 
 ###
 
-GET http://localhost:3000/comments/6777be6b5d9bfaed4c7c1ee7
+GET http://localhost:3000/comments/6777e6728638046b9c6f4430
 
 ###
 
-GET http://localhost:3000/comments/post/6777be3b5d9bfaed4c7c1ee0
+GET http://localhost:3000/comments?post=6777be3b5d9bfaed4c7c1ee0
 
 ###
 
@@ -104,3 +103,44 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/users/6777da40a54dd3733abe5f5d
 
+###
+
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "username":"johnbon",
+    "fullname": "John Lenon",
+    "password": "password123"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+###
+
+POST http://localhost:3000/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzc4NzU5MDcxYWY4NWMyZTU0ZjA3NjMiLCJyYW5kb20iOiIwLjg3NDQ3MjUwOTg5OTU3NzQiLCJpYXQiOjE3MzU5NDc3NjMsImV4cCI6MTczNjU1MjU2M30.B-eY7w1NHFjV8Kv-GlBKSJK2wiPq27bvLqHhFOzzIA8"
+}
+
+###
+
+POST http://localhost:3000/auth/logout
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzc4NzU5MDcxYWY4NWMyZTU0ZjA3NjMiLCJyYW5kb20iOiIwLjM1NzUwMzc0Nzk5MjkxNDIiLCJpYXQiOjE3MzU5NDc4NTEsImV4cCI6MTczNjU1MjY1MX0.OoCqENDYGRRcuOJ49kmEGtZIvAq3TYPTK3mxX-fWDEQ"
+}
+
+###
