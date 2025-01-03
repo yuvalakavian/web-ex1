@@ -7,11 +7,14 @@ const app = express();
 const postsRoute = require("./routes/posts_route");
 const commentsRoute = require("./routes/comments_route")
 const usersRoute = require("./routes/users_route");
+const authRoutes = require("./routes/auth_route");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/posts", postsRoute);
 app.use("/comments", commentsRoute)
 app.use("/users", usersRoute);
+app.use("/auth", authRoutes);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
