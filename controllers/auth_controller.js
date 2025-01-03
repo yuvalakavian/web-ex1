@@ -1,5 +1,5 @@
 const { NextFunction, Request, Response } = require('express');
-const userModel = require('../models/users_model');
+const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 

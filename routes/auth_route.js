@@ -10,4 +10,4 @@ router.post("/refresh", authController.refresh);
 
 router.post("/logout", authController.logout);
 
-export default router;
+module.exports = router;
