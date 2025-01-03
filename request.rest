@@ -72,4 +72,35 @@ DELETE http://localhost:3000/comments/6777be6b5d9bfaed4c7c1ee7
 
 ###
 
+GET http://localhost:3000/users
+
+###
+
+GET http://localhost:3000/users/6777da40a54dd3733abe5f5d
+
+###
+
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "Test",
+    "email": "maya@gmail.com",
+    "fullname": "Maya Dahan"
+}
+
+###
+
+PUT http://localhost:3000/users/6777da40a54dd3733abe5f5d
+Content-Type: application/json
+
+{
+    "username": "test2",
+    "email": "maya@gmail.com",
+    "fullname": "Maya Maya"
+}
+
+###
+
+DELETE http://localhost:3000/users/6777da40a54dd3733abe5f5d
 
