@@ -20,7 +20,7 @@ const getAllComments =  async (req, res) => {
 // Get comment by ID
 const getCommentById =  async (req, res) => {
   try {
-    const comment = await CommentModel.findById(req.params.commentID);
+    const comment = await CommentModel.findById(req.params.id);
     if (!comment) return res.status(404).send();
     res.send(comment);
   } catch (error) {
@@ -30,14 +30,14 @@ const getCommentById =  async (req, res) => {
 
 // Get comments by post ID
 const getCommentByPostId = async (req, res) => {
-  const comments = await CommentModel.find({ postsID: req.params.postsID });
+  const comments = await CommentModel.find({ postsID: req.params.id });
   res.send(comments);
 };
 
 // Update a comment
 const updateComment = async (req, res) => {
   try {
-    const comment = await CommentModel.findByIdAndUpdate(req.params.commentID, req.body, { new: true, runValidators: true });
+    const comment = await CommentModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!comment) return res.status(404).send();
     res.send(comment);
   } catch (error) {
@@ -48,7 +48,7 @@ const updateComment = async (req, res) => {
 // Delete a comment
 const deleteComment = async (req, res) => {
   try {
-    const comment = await CommentModel.findByIdAndDelete(req.params.commentID);
+    const comment = await CommentModel.findByIdAndDelete(req.params.id);
     if (!comment) return res.status(404).send();
     res.send(comment);
   } catch (error) {
