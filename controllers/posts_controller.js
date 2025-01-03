@@ -20,7 +20,7 @@ const getAllPosts = async (req, res) => {
 // Get post by ID
 const getPostById = async (req, res) => {
   try {
-    const post = await PostModel.findById(req.params.id);
+    const post = await Post.findById(req.params.postsID);
     if (!post) return res.status(404).send();
     res.send(post);
   } catch (error) {
@@ -32,7 +32,7 @@ const getPostById = async (req, res) => {
 // Add a new post
 const createPost = async (req, res) => {
   try {
-    const post = new PostModel(req.body);
+    const post = new Post(req.body);
     await post.save();
     res.status(201).send(post);
   } catch (error) {
@@ -43,7 +43,7 @@ const createPost = async (req, res) => {
 // Update a post
 const updatePost = async (req, res) => {
   try {
-    const post = await PostModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const post = await Post.findByIdAndUpdate(req.params.postsID, req.body, { new: true, runValidators: true });
     if (!post) return res.status(404).send();
     res.send(post);
   } catch (error) {

@@ -5,11 +5,11 @@ GET http://localhost:3000/posts
 
 ###
 
-GET http://localhost:3000/posts?sender=555
+GET http://localhost:3000/posts?sender=Yuval
 
 ###
 
-GET http://localhost:3000/posts/6777ba0afde5dd028de3bdcd
+GET http://localhost:3000/posts/67406a44252a1b0d5d4c8584
 
 ###
 
@@ -17,19 +17,19 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "Test777",
-    "senderID": "555",
-    "content": "This is a test 4"
+    "title": "Test",
+    "senderID": "Maya",
+    "content": "This is a test"
 }
 
 ###
 
-PUT http://localhost:3000/posts/6777b9f5fde5dd028de3bdcb
+PUT http://localhost:3000/posts/67406a44252a1b0d5d4c8584
 Content-Type: application/json
 
 {
-    "senderID":555,
-    "content":"this is a test number 25555",
+    "senderID":123,
+    "content":"this is a test number 2",
     "title":"test"
 } 
 
@@ -39,11 +39,11 @@ GET http://localhost:3000/comments
 
 ###
 
-GET http://localhost:3000/comments/67536054eb453fbd8640b426
+GET http://localhost:3000/comments/67406bd5252a1b0d5d4c8593
 
 ###
 
-GET http://localhost:3000/comments/post/675319f3eb453fbd8640b40e
+GET http://localhost:3000/comments/post/67406a44252a1b0d5d4c8584
 
 ###
 
@@ -51,25 +51,25 @@ POST http://localhost:3000/comments
 Content-Type: application/json
 
 {
-  "postsID": "675319f3eb453fbd8640b40e",
-  "content": "wow wow 7777",
-  "senderID": "555"
+  "postsID": "67406a82252a1b0d5d4c8587",
+  "content": "wow",
+  "senderID": "4567"
 }
 
 ###
 
-PUT http://localhost:3000/comments/67536054eb453fbd8640b426
+PUT http://localhost:3000/comments/67406c9e252a1b0d5d4c859b
 Content-Type: application/json
 
 {
   "postsID": "67406a82252a1b0d5d4c8587",
-  "content": "wow this is amazing 123123",
-  "senderID": "666666"
+  "content": "wow this is amazing",
+  "senderID": "4567"
 }
 
 ###
 
-DELETE http://localhost:3000/comments/67536054eb453fbd8640b426
+DELETE http://localhost:3000/comments/67406c9e252a1b0d5d4c859b
 
 ###
 
