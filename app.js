@@ -13,6 +13,10 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+const usersRoute = require("./routes/users_route");
+app.use("/users", usersRoute);
+
 const postsRoute = require("./routes/posts_route");
 app.use("/posts", postsRoute);
 
