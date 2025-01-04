@@ -46,6 +46,11 @@ describe("Post Controller Tests", () => {
     expect(response.body.senderID).toBe("TestOwner");
   });
 
+  test("Get post by ID failed", async () => {
+    const response = await request(app).get(`/posts/1234`);
+    expect(response.statusCode).toBe(500);
+  });
+
   test("Get posts by senderID", async () => {
     const response = await request(app).get("/posts?sender=TestOwner");
     expect(response.statusCode).toBe(200);
@@ -85,6 +90,14 @@ describe("Post Controller Tests", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Updated Test Post");
     expect(response.body.content).toBe("Updated Content");
+  });
+
+  test("Update post failed post doesnt exists", async () => {
+    const response = await request(app).put(`/posts/1234`).send({
+      title: "Updated Test Post",
+      content: "Updated Content",
+    });
+    expect(response.statusCode).toBe(400);
   });
 
   test("Get updated post by ID", async () => {

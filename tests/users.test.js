@@ -46,12 +46,24 @@ describe("User Controller Tests", () => {
     expect(response.body.fullname).toBe("John Doe");
   });
 
+  test("Get user by ID failed", async () => {
+    const response = await request(app).get(`/users/1234`);
+    expect(response.statusCode).toBe(500);
+  });
+
   test("Update user", async () => {
     const response = await request(app).put(`/users/${userId}`).send({
       fullname: "John Updated",
     });
     expect(response.statusCode).toBe(200);
     expect(response.body.fullname).toBe("John Updated");
+  });
+
+  test("Update user failed", async () => {
+    const response = await request(app).put(`/users/1234`).send({
+      fullname: "John Updated",
+    });
+    expect(response.statusCode).toBe(400);
   });
 
   test("Get all users (non-empty)", async () => {
