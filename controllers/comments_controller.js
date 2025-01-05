@@ -12,9 +12,20 @@ const createComment = async (req, res) => {
 };
 
 // Get all comments
-const getAllComments =  async (req, res) => {
-  const comments = await CommentModel.find();
-  res.send(comments);
+// Optional: post ID filter
+const getAllComments = async (req, res) => {
+  const filter = req.query.post;
+  try {
+    if (filter) {
+      const posts = await CommentModel.find({ postsID: filter });
+      res.send(posts);
+    } else {
+      const posts = await CommentModel.find();
+      res.send(posts);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };
 
 // Get comment by ID
@@ -26,12 +37,6 @@ const getCommentById =  async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
-};
-
-// Get comments by post ID
-const getCommentByPostId = async (req, res) => {
-  const comments = await CommentModel.find({ postsID: req.params.id });
-  res.send(comments);
 };
 
 // Update a comment
@@ -60,7 +65,6 @@ module.exports = {
     createComment,
     getAllComments,
     getCommentById,
-    getCommentByPostId,
     updateComment,
     deleteComment
   };

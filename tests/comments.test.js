@@ -48,7 +48,7 @@ describe("Comments Tests", () => {
   });
 
   test("Test get Comments by post ID", async () => {
-    const response = await request(app).get("/comments/post/"+postId);
+    const response = await request(app).get("/comments?post="+postId);
     expect(response.statusCode).toBe(200);
     expect(response.body[0].postsID).toBe(postId)
     expect(response.body[0].content).toBe("Test the comment");
