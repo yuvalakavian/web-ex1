@@ -4,7 +4,6 @@ const initApp = require("../server");
 const mongoose = require("mongoose");
 const postModel = require("../models/post");
 const commentModel = require("../models/comment");
-const { getCommentByPostId } = require("../controllers/comments_controller");
 
 var app;
 beforeAll(async () => {
