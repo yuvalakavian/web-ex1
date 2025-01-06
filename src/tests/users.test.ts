@@ -1,9 +1,11 @@
-const request = require("supertest");
-const initApp = require("../server");
-const mongoose = require("mongoose");
-const UserModel = require("../models/user");
+import request from "supertest";
+import initApp from "../server";
+import mongoose from "mongoose";
+import UserModel from "../models/user_model";
+import { Express } from "express";
 
-var app;
+let app: Express;
+
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
@@ -48,7 +50,7 @@ describe("User Controller Tests", () => {
 
   test("Get user by ID failed", async () => {
     const response = await request(app).get(`/users/1234`);
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(400);
   });
 
   test("Update user", async () => {

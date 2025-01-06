@@ -1,13 +1,15 @@
-const request = require("supertest");
-const initApp = require("../server");
-const mongoose = require("mongoose");
-const PostModel = require("../models/post");
+import request from "supertest";
+import initApp from "../server";
+import mongoose from "mongoose";
+import postModel from "../models/post_model";
+import { Express } from "express";
 
-var app;
+let app: Express;
+
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
-  await PostModel.deleteMany();
+  await postModel.deleteMany();
 });
 
 afterAll((done) => {
@@ -29,12 +31,12 @@ describe("Post Controller Tests", () => {
     const response = await request(app).post("/posts").send({
       title: "Test Post",
       content: "Test Content",
-      senderID: "TestOwner",
+      senderId: "TestOwner",
     });
     expect(response.statusCode).toBe(201);
     expect(response.body.title).toBe("Test Post");
     expect(response.body.content).toBe("Test Content");
-    expect(response.body.senderID).toBe("TestOwner");
+    expect(response.body.senderId).toBe("TestOwner");
     postId = response.body._id;
   });
 
@@ -43,28 +45,28 @@ describe("Post Controller Tests", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Test Post");
     expect(response.body.content).toBe("Test Content");
-    expect(response.body.senderID).toBe("TestOwner");
+    expect(response.body.senderId).toBe("TestOwner");
   });
 
   test("Get post by ID failed", async () => {
     const response = await request(app).get(`/posts/1234`);
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(400);
   });
 
-  test("Get posts by senderID", async () => {
+  test("Get posts by senderId", async () => {
     const response = await request(app).get("/posts?sender=TestOwner");
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
     expect(response.body[0].title).toBe("Test Post");
     expect(response.body[0].content).toBe("Test Content");
-    expect(response.body[0].senderID).toBe("TestOwner");
+    expect(response.body[0].senderId).toBe("TestOwner");
   });
 
   test("Create another post", async () => {
     const response = await request(app).post("/posts").send({
       title: "Test Post 2",
       content: "Test Content 2",
-      senderID: "TestOwner2",
+      senderId: "TestOwner2",
     });
     expect(response.statusCode).toBe(201);
   });

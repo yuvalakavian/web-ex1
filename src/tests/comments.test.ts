@@ -1,16 +1,15 @@
-const request = require("supertest");
+import request from "supertest";
+import initApp from "../server";
+import mongoose from "mongoose";
+import commentModel from "../models/comment_model";
+import { Express } from "express";
 
-const initApp = require("../server");
-const mongoose = require("mongoose");
-const postModel = require("../models/post");
-const commentModel = require("../models/comment");
+let app: Express;
 
-var app;
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
   await commentModel.deleteMany();
-  await postModel.deleteMany();
 });
 
 afterAll((done) => {
@@ -19,8 +18,12 @@ afterAll((done) => {
   done();
 });
 
-let postId = "";
 let commentId = "";
+const commentTest = {
+  postsId: "677c5747e850a45522b6691f",
+  content: "Test the comment",
+  senderId: "TestOwner",
+};
 describe("Comments Tests", () => {
   test("Comments test get all", async () => {
     const response = await request(app).get("/comments");
@@ -29,68 +32,65 @@ describe("Comments Tests", () => {
   });
 
   test("Test Create Comment", async () => {
-    const responsePost = await request(app).post("/posts").send({
-      title: "Test Post",
-      content: "Test Content",
-      senderID: "TestOwner"
-    })
-    postId = responsePost.body._id.toString().replace(/ObjectId\("(.*)"\)/, "$1");
-    const response = await request(app).post("/comments").send({
-      postsID: postId,
-      content: "Test the comment",
-      senderID: "TestOwner"
-    }); 
-    commentId = response.body._id
+    const response = await request(app).post("/comments").send(commentTest);
+    commentId = response.body._id;
     expect(response.statusCode).toBe(201);
-    expect(response.body.postsID).toBe(postId)
-    expect(response.body.content).toBe("Test the comment");
-    expect(response.body.senderID).toBe("TestOwner");
+    expect(response.body.postsId).toBe(commentTest.postsId);
+    expect(response.body.content).toBe(commentTest.content);
+    expect(response.body.senderId).toBe(commentTest.senderId);
   });
 
   test("Test get Comments by post ID", async () => {
-    const response = await request(app).get("/comments?post="+postId);
+    const response = await request(app).get(
+      "/comments?post=" + commentTest.postsId
+    );
     expect(response.statusCode).toBe(200);
-    expect(response.body[0].postsID).toBe(postId)
-    expect(response.body[0].content).toBe("Test the comment");
-    expect(response.body[0].senderID).toBe("TestOwner");
+    expect(response.body[0].postsId).toBe(commentTest.postsId);
+    expect(response.body[0].content).toBe(commentTest.content);
+    expect(response.body[0].senderId).toBe(commentTest.senderId);
   });
 
   test("Test get Comment by id", async () => {
     const response = await request(app).get("/comments/" + commentId);
     expect(response.statusCode).toBe(200);
-    expect(response.body.postsID).toBe(postId)
-    expect(response.body.content).toBe("Test the comment");
-    expect(response.body.senderID).toBe("TestOwner");
+    expect(response.body.postsId).toBe(commentTest.postsId);
+    expect(response.body.content).toBe(commentTest.content);
+    expect(response.body.senderId).toBe(commentTest.senderId);
   });
 
-  test("Test update Comment", async () =>{
-    const response2 = await request(app).put("/comments/" + commentId).send({
-      content: "wow this is amazing",
-    });
+  test("Test update Comment", async () => {
+    const response2 = await request(app)
+      .put("/comments/" + commentId)
+      .send({
+        content: "wow this is amazing",
+      });
+    expect(response2.statusCode).toBe(200);
     const response = await request(app).get("/comments/" + commentId);
     expect(response.statusCode).toBe(200);
     expect(response.body.content).toBe("wow this is amazing");
-  })
+  });
 
-  test("Test update non exists Comment", async () =>{
+  test("Test update non exists Comment", async () => {
     const response = await request(app).put("/comments/1234").send({
       content: "wow this is amazing",
     });
     expect(response.statusCode).toBe(400);
-  })
+  });
 
-  test("Test update Comment with wrong parmeters", async () =>{
-    const response = await request(app).put("/comments" + commentId).send({
-      title: "wow this is amazing",
-    });
+  test("Test update Comment with wrong parmeters", async () => {
+    const response = await request(app)
+      .put("/comments" + commentId)
+      .send({
+        title: "wow this is amazing",
+      });
     expect(response.statusCode).toBe(404);
-  })
+  });
 
   test("Test Create Comment 2", async () => {
     const response = await request(app).post("/comments").send({
-      postsID: postId,
+      postsId: commentTest.postsId,
       content: "Test the comment 2",
-      senderID: "TestOwner2"
+      senderId: "TestOwner2",
     });
     expect(response.statusCode).toBe(201);
   });
@@ -118,6 +118,6 @@ describe("Comments Tests", () => {
 
   test("Test delete non exists Comment", async () => {
     const response = await request(app).delete("/comments/1234");
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(400);
   });
 });
