@@ -1,7 +1,7 @@
 import request from "supertest";
 import initApp from "../server";
 import mongoose from "mongoose";
-import commentModel from "../models/comment_model";
+import commentModel from "../models/comments_model";
 import { Express } from "express";
 
 let app: Express;
@@ -41,13 +41,17 @@ describe("Comments Tests", () => {
   });
 
   test("Test get Comments by post ID", async () => {
-    const response = await request(app).get(
-      "/comments?post=" + commentTest.postsId
-    );
+    const responseCreate = await request(app).post("/comments").send({
+      postsId: "1234",
+      content: "Test the comment 2",
+      senderId: "TestOwner2",
+    });
+    expect(responseCreate.statusCode).toBe(200);
+    const response = await request(app).get("/comments?post=" + "1234");
     expect(response.statusCode).toBe(200);
-    expect(response.body[0].postsId).toBe(commentTest.postsId);
-    expect(response.body[0].content).toBe(commentTest.content);
-    expect(response.body[0].senderId).toBe(commentTest.senderId);
+    expect(response.body[0].postsId).toBe("1234");
+    expect(response.body[0].content).toBe("Test the comment 2");
+    expect(response.body[0].senderId).toBe("TestOwner2");
   });
 
   test("Test get Comment by id", async () => {
@@ -86,7 +90,7 @@ describe("Comments Tests", () => {
     expect(response.statusCode).toBe(404);
   });
 
-  test("Test Create Comment 2", async () => {
+  test("Test Create Comment 3", async () => {
     const response = await request(app).post("/comments").send({
       postsId: commentTest.postsId,
       content: "Test the comment 2",
@@ -95,10 +99,10 @@ describe("Comments Tests", () => {
     expect(response.statusCode).toBe(201);
   });
 
-  test("Test get all 2 Comment", async () => {
+  test("Test get all 3 Comment", async () => {
     const response = await request(app).get("/comments");
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(2);
+    expect(response.body.length).toBe(3);
   });
 
   test("Test Create Comment fail", async () => {

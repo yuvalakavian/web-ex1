@@ -1,7 +1,7 @@
 import request from "supertest";
 import initApp from "../server";
 import mongoose from "mongoose";
-import UserModel from "../models/user_model";
+import UserModel from "../models/users_model";
 import { Express } from "express";
 
 let app: Express;

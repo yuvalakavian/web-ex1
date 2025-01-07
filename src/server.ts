@@ -8,14 +8,14 @@ import bodyParser from "body-parser";
 import postsRoute from "./routes/posts_route";
 import commentsRoute from "./routes/comments_route";
 import usersRoute from "./routes/users_route";
-// const authRoutes = require("./routes/auth_route");
+import authRoutes from "./routes/auth_route";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/posts", postsRoute);
 app.use("/comments", commentsRoute);
 app.use("/users", usersRoute);
-// app.use("/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
