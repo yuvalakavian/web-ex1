@@ -12,6 +12,7 @@ const register = async (req: Request, res: Response) => {
     const user = await userModel.create({
       email: req.body.email,
       userName: req.body.userName,
+      fullname: req.body.fullname,
       password: hashedPassword,
     });
     res.status(200).send(user);
