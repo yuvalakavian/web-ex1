@@ -3,13 +3,26 @@ import initApp from "../server";
 import mongoose from "mongoose";
 import postModel from "../models/posts_model";
 import { Express } from "express";
+import userModel, { IUser } from "../models/users_model";
 
 let app: Express;
+
+type User = IUser & { token?: string };
+const testUser: User = {
+  email: "test@user.com",
+  password: "testpassword",
+};
 
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
   await postModel.deleteMany();
+  await userModel.deleteMany();
+  await request(app).post("/auth/register").send(testUser);
+  const res = await request(app).post("/auth/login").send(testUser);
+  testUser.token = res.body.accessToken;
+  testUser._id = res.body._id;
+  expect(testUser.token).toBeDefined();
 });
 
 afterAll((done) => {
@@ -28,15 +41,17 @@ describe("Post Controller Tests", () => {
   });
 
   test("Create a post", async () => {
-    const response = await request(app).post("/posts").send({
-      title: "Test Post",
-      content: "Test Content",
-      senderId: "TestOwner",
-    });
+    const response = await request(app)
+      .post("/posts")
+      .set({ authorization: "JWT " + testUser.token })
+      .send({
+        title: "Test Post",
+        content: "Test Content",
+      });
     expect(response.statusCode).toBe(201);
     expect(response.body.title).toBe("Test Post");
     expect(response.body.content).toBe("Test Content");
-    expect(response.body.senderId).toBe("TestOwner");
+    expect(response.body.senderId).toBe(testUser._id);
     postId = response.body._id;
   });
 
@@ -45,7 +60,7 @@ describe("Post Controller Tests", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Test Post");
     expect(response.body.content).toBe("Test Content");
-    expect(response.body.senderId).toBe("TestOwner");
+    expect(response.body.senderId).toBe(testUser._id);
   });
 
   test("Get post by ID failed", async () => {
@@ -59,15 +74,18 @@ describe("Post Controller Tests", () => {
     expect(response.body.length).toBe(1);
     expect(response.body[0].title).toBe("Test Post");
     expect(response.body[0].content).toBe("Test Content");
-    expect(response.body[0].senderId).toBe("TestOwner");
+    expect(response.body[0].senderId).toBe(testUser._id);
   });
 
   test("Create another post", async () => {
-    const response = await request(app).post("/posts").send({
-      title: "Test Post 2",
-      content: "Test Content 2",
-      senderId: "TestOwner2",
-    });
+    const response = await request(app)
+      .post("/posts")
+      .set({ authorization: "JWT " + testUser.token })
+      .send({
+        title: "Test Post 2",
+        content: "Test Content 2",
+        senderId: "TestOwner2",
+      });
     expect(response.statusCode).toBe(201);
   });
 
@@ -78,9 +96,12 @@ describe("Post Controller Tests", () => {
   });
 
   test("Create post fail (missing fields)", async () => {
-    const response = await request(app).post("/posts").send({
-      title: "Incomplete Post",
-    });
+    const response = await request(app)
+      .post("/posts")
+      .set({ authorization: "JWT " + testUser.token })
+      .send({
+        title: "Incomplete Post",
+      });
     expect(response.statusCode).toBe(400);
   });
 
@@ -108,4 +129,6 @@ describe("Post Controller Tests", () => {
     expect(response.body.title).toBe("Updated Test Post");
     expect(response.body.content).toBe("Updated Content");
   });
+
+  //TODO: add tests for delete posts
 });
