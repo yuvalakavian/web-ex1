@@ -59,7 +59,7 @@ describe("Comments Tests with Authentication", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.postId).toBe(commentTest.postId);
     expect(response.body.content).toBe(commentTest.content);
-    expect(response.body.senderId).toBe(commentTest.senderId);
+    expect(response.body.senderId).toBe(testUser._id);
   });
 
   test("Test get Comment by ID", async () => {
@@ -69,7 +69,17 @@ describe("Comments Tests with Authentication", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.postId).toBe(commentTest.postId);
     expect(response.body.content).toBe(commentTest.content);
-    expect(response.body.senderId).toBe(commentTest.senderId);
+    expect(response.body.senderId).toBe(testUser._id);
+  });
+
+  test("Test get Comments by post ID", async () => {
+    const response = await request(app)
+      .get(`/comments/post/${commentTest.postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(200);
+    expect(response.body[0].postId).toBe(commentTest.postId);
+    expect(response.body[0].content).toBe(commentTest.content);
+    expect(response.body[0].senderId).toBe(testUser._id);
   });
 
   test("Test update Comment", async () => {

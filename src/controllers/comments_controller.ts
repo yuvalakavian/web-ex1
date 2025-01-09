@@ -19,12 +19,11 @@ class CommentsController extends BaseController<IComments> {
     super.create(req, res);
   }
 
-  async getAll(req: Request, res: Response) {
-    const filtersSender = req.query.sender as string | undefined;
-    const filtersPost = req.query.post as string | undefined;
+  async getCommentsByPostId(req: Request, res: Response) {
+    const filter = req.params.id;
     try {
-      if (filtersSender || filtersPost) {
-        const item = await this.model.find({ senderId: filtersSender, postId: filtersPost });
+      if (filter) {
+        const item = await this.model.find({ postId: filter });
         res.send(item);
       } else {
         const items = await this.model.find();

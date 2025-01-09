@@ -7,6 +7,8 @@ router.get("/",authMiddleware, commentsController.getAll.bind(commentsController
 
 router.get("/:id",authMiddleware, commentsController.getById.bind(commentsController));
 
+router.get("/post/:id", authMiddleware, commentsController.getCommentsByPostId.bind(commentsController))
+
 router.post("/", authMiddleware, commentsController.create.bind(commentsController));
 
 router.put("/:id",authMiddleware, commentsController.updateItem.bind(commentsController));
