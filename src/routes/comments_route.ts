@@ -106,9 +106,7 @@ router.get("/:id", authMiddleware, commentsController.getById.bind(commentsContr
  *         description: Post not found.
  */
 
-/*TODO: implement this route
-router.get("/post/:id", commentsController.getByPostId.bind(commentsController));
-*/
+router.get("/post/:id", authMiddleware, commentsController.getCommentsByPostId.bind(commentsController))
 
 /**
  * @swagger
@@ -128,6 +126,7 @@ router.get("/post/:id", commentsController.getByPostId.bind(commentsController))
  *       201:
  *         description: Comment created successfully.
  */
+
 router.post("/", authMiddleware, commentsController.create.bind(commentsController));
 
 /**
