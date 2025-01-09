@@ -149,4 +149,25 @@ describe("Post Controller Tests", () => {
   });
 
   //TODO: add tests for delete posts
+
+  test("Delete post by ID", async () => {
+    const response = await request(app)
+      .delete(`/posts/${postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("Delete post failed (non-existing ID)", async () => {
+    const response = await request(app)
+      .delete(`/posts/1234`)
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(400);
+  });
+
+  test("Verify post was deleted", async () => {
+    const response = await request(app)
+      .get(`/posts/${postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(404);
+  });
 });
