@@ -1,4 +1,5 @@
-const initApp = require("./server");
+import initApp from "./server"
+
 const port = process.env.PORT;
 
 initApp().then((app) => {
@@ -6,5 +7,3 @@ initApp().then((app) => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
 });
-
-// module.exports = app;

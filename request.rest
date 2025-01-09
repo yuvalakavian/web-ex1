@@ -8,7 +8,7 @@ GET http://localhost:3000/posts?sender=Maya
 
 ###
 
-GET http://localhost:3000/posts/6777be3b5d9bfaed4c7c1ee0
+GET http://localhost:3000/posts/677a6e417c6cefc8ff6e1518
 
 ###
 
@@ -17,17 +17,17 @@ Content-Type: application/json
 
 {
     "title": "Test",
-    "senderID": "Maya",
+    "senderId": "Maya",
     "content": "This is a test"
 }
 
 ###
 
-PUT http://localhost:3000/posts/6777be3b5d9bfaed4c7c1ee0
+PUT http://localhost:3000/posts/677a6e417c6cefc8ff6e1518
 Content-Type: application/json
 
 {
-    "senderID":123,
+    "senderId":123,
     "content":"this is a test number 2",
     "title":"test"
 } 
@@ -50,9 +50,9 @@ POST http://localhost:3000/comments
 Content-Type: application/json
 
 {
-  "postsID": "6777be3b5d9bfaed4c7c1ee0",
+  "postsId": "6777be3b5d9bfaed4c7c1ee0",
   "content": "wow",
-  "senderID": "4567"
+  "senderId": "4567"
 }
 
 ###
@@ -62,7 +62,7 @@ Content-Type: application/json
 
 {
   "content": "wow this is amazing",
-  "senderID": "4567"
+  "senderId": "4567"
 }
 
 ###
