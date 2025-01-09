@@ -50,7 +50,7 @@ POST http://localhost:3000/comments
 Content-Type: application/json
 
 {
-  "postsId": "6777be3b5d9bfaed4c7c1ee0",
+  "postId": "6777be3b5d9bfaed4c7c1ee0",
   "content": "wow",
   "senderId": "4567"
 }

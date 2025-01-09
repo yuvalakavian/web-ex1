@@ -19,5 +19,3 @@ class PostsController extends BaseController<IPost> {
 }
 
 export default new PostsController();
-
-// TODO: add Optional: senderId filter

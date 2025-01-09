@@ -38,8 +38,8 @@ describe("Post Controller Tests", () => {
 
   test("Get all posts (empty)", async () => {
     const response = await request(app)
-    .get("/posts")
-    .set({ authorization: `JWT ${testUser.token}` });
+      .get("/posts")
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(0);
   });
@@ -61,8 +61,8 @@ describe("Post Controller Tests", () => {
 
   test("Get post by ID", async () => {
     const response = await request(app)
-    .get(`/posts/${postId}`)
-    .set({ authorization: `JWT ${testUser.token}` });
+      .get(`/posts/${postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Test Post");
     expect(response.body.content).toBe("Test Content");
@@ -71,20 +71,28 @@ describe("Post Controller Tests", () => {
 
   test("Get post by ID failed", async () => {
     const response = await request(app)
-    .get(`/posts/1234`)
-    .set({ authorization: `JWT ${testUser.token}` });
+      .get(`/posts/1234`)
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(400);
   });
 
   test("Get posts by senderId", async () => {
     const response = await request(app)
-    .get("/posts?sender=TestOwner")
-    .set({ authorization: `JWT ${testUser.token}` })
+      .get(`/posts?sender=${testUser._id}`)
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
     expect(response.body[0].title).toBe("Test Post");
     expect(response.body[0].content).toBe("Test Content");
     expect(response.body[0].senderId).toBe(testUser._id);
+  });
+
+  test("Get posts by senderId that does not have posts", async () => {
+    const response = await request(app)
+      .get("/posts?sender=noPosts")
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(0);
   });
 
   test("Create another post", async () => {
@@ -101,8 +109,8 @@ describe("Post Controller Tests", () => {
 
   test("Get all posts (non-empty)", async () => {
     const response = await request(app)
-    .get("/posts")
-    .set({ authorization: `JWT ${testUser.token}` })
+      .get("/posts")
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
   });
@@ -119,30 +127,32 @@ describe("Post Controller Tests", () => {
 
   test("Update post", async () => {
     const response = await request(app)
-    .put(`/posts/${postId}`)
-    .set({ authorization: `JWT ${testUser.token}` })
-    .send({
-      title: "Updated Test Post",
-      content: "Updated Content",
-    });
+      .put(`/posts/${postId}`)
+      .set({ authorization: `JWT ${testUser.token}` })
+      .send({
+        title: "Updated Test Post",
+        content: "Updated Content",
+      });
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Updated Test Post");
     expect(response.body.content).toBe("Updated Content");
   });
 
   test("Update post failed post doesnt exists", async () => {
-    const response = await request(app).put(`/posts/1234`)
-    .set({ authorization: `JWT ${testUser.token}` }).send({
-      title: "Updated Test Post",
-      content: "Updated Content",
-    });
+    const response = await request(app)
+      .put(`/posts/1234`)
+      .set({ authorization: `JWT ${testUser.token}` })
+      .send({
+        title: "Updated Test Post",
+        content: "Updated Content",
+      });
     expect(response.statusCode).toBe(400);
   });
 
   test("Get updated post by ID", async () => {
     const response = await request(app)
-    .get(`/posts/${postId}`)
-    .set({ authorization: `JWT ${testUser.token}` });
+      .get(`/posts/${postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.title).toBe("Updated Test Post");
     expect(response.body.content).toBe("Updated Content");
