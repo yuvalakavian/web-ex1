@@ -12,9 +12,10 @@ import { authMiddleware } from "../controllers/auth_controller";
 
 /**
  * @swagger
- * /:
+ * users/:
  *   get:
  *     summary: Get all users
+ *     tags: [Users]
  *     security:
  *       - BearerAuth: []
  *     responses:
@@ -31,9 +32,10 @@ router.get("/", authMiddleware, usersController.getAll.bind(usersController));
 
 /**
  * @swagger
- * /{id}:
+ * users/{id}:
  *   get:
  *     summary: Get a user by ID
+ *     tags: [Users]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -56,9 +58,10 @@ router.get("/:id", authMiddleware, usersController.getById.bind(usersController)
 
 /**
  * @swagger
- * /:
+ * users/:
  *   post:
  *     summary: Create a new user
+ *     tags: [Users]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -75,9 +78,10 @@ router.post("/", authMiddleware, usersController.create.bind(usersController));
 
 /**
  * @swagger
- * /{id}:
+ * users/{id}:
  *   put:
  *     summary: Update a user
+ *     tags: [Users]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -102,9 +106,10 @@ router.put("/:id", authMiddleware, usersController.updateItem.bind(usersControll
 
 /**
  * @swagger
- * /{id}:
+ * users/{id}:
  *   delete:
  *     summary: Delete a user
+ *     tags: [Users]
  *     security:
  *       - BearerAuth: []
  *     parameters:

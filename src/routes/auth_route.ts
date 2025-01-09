@@ -28,16 +28,26 @@ import authController from "../controllers/auth_controller";
 *       type: object
 *       required:
 *         - email
+*         - fullName
+*         - userName
 *         - password
 *       properties:
 *         email:
 *           type: string
 *           description: The user email
+*         fullName:
+*           type: string
+*           description: The user fullName
+*         userName:
+*           type: string
+*           description: The user userName
 *         password:
 *           type: string
 *           description: The user password
 *       example:
 *         email: 'bob@gmail.com'
+*         fullane: 'bob the mob'
+*         userName: 'john cena'
 *         password: '123456'
 */
 

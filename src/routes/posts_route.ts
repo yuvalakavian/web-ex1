@@ -12,9 +12,35 @@ import { authMiddleware } from "../controllers/auth_controller";
 
 /**
  * @swagger
- * /:
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: The title of the post
+ *           example: My first post
+ *         content:
+ *           type: string
+ *           description: The content of the post
+ *           example: This is the content of my first post.
+ *         senderId:
+ *           type: string
+ *           description: The ID of the user who created the post
+ *           example: user123
+ *       required:
+ *         - title
+ *         - content
+ *         - senderId
+ */
+
+/**
+ * @swagger
+ * posts/:
  *   get:
  *     summary: Get all posts
+ *     tags: [Posts]
  *     security:
  *       - BearerAuth: []
  *     responses:
@@ -31,9 +57,10 @@ router.get("/", authMiddleware, postsController.getAll.bind(postsController));
 
 /**
  * @swagger
- * /{id}:
+ * posts/{id}:
  *   get:
  *     summary: Get a post by ID
+ *     tags: [Posts]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -56,9 +83,10 @@ router.get("/:id", authMiddleware, postsController.getById.bind(postsController)
 
 /**
  * @swagger
- * /:
+ * posts/:
  *   post:
  *     summary: Create a new post
+ *     tags: [Posts]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -75,9 +103,10 @@ router.post("/", authMiddleware, postsController.create.bind(postsController));
 
 /**
  * @swagger
- * /{id}:
+ * posts/{id}:
  *   put:
  *     summary: Update a post
+ *     tags: [Posts]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -102,9 +131,10 @@ router.put("/:id", authMiddleware, postsController.updateItem.bind(postsControll
 
 /**
  * @swagger
- * /{id}:
+ * posts/{id}:
  *   delete:
  *     summary: Delete a post
+ *     tags: [Posts]
  *     security:
  *       - BearerAuth: []
  *     parameters:
