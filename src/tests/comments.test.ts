@@ -36,7 +36,7 @@ afterAll((done) => {
 
 let commentId = "";
 const commentTest = {
-  postsId: "677c5747e850a45522b6691f",
+  postId: "677c5747e850a45522b6691f",
   content: "Test the comment",
   senderId: "TestOwner",
 };
@@ -45,7 +45,7 @@ describe("Comments Tests with Authentication", () => {
   test("Comments test get all (empty)", async () => {
     const response = await request(app)
       .get("/comments")
-      .set({ authorization: `JWT ${testUser.token}` })
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(0);
   });
@@ -57,19 +57,29 @@ describe("Comments Tests with Authentication", () => {
       .send(commentTest);
     commentId = response.body._id;
     expect(response.statusCode).toBe(201);
-    expect(response.body.postsId).toBe(commentTest.postsId);
+    expect(response.body.postId).toBe(commentTest.postId);
     expect(response.body.content).toBe(commentTest.content);
-    expect(response.body.senderId).toBe(commentTest.senderId);
+    expect(response.body.senderId).toBe(testUser._id);
   });
 
   test("Test get Comment by ID", async () => {
     const response = await request(app)
       .get(`/comments/${commentId}`)
-      .set({ authorization: `JWT ${testUser.token}` })
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
-    expect(response.body.postsId).toBe(commentTest.postsId);
+    expect(response.body.postId).toBe(commentTest.postId);
     expect(response.body.content).toBe(commentTest.content);
-    expect(response.body.senderId).toBe(commentTest.senderId);
+    expect(response.body.senderId).toBe(testUser._id);
+  });
+
+  test("Test get Comments by post ID", async () => {
+    const response = await request(app)
+      .get(`/comments/post/${commentTest.postId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
+    expect(response.statusCode).toBe(200);
+    expect(response.body[0].postId).toBe(commentTest.postId);
+    expect(response.body[0].content).toBe(commentTest.content);
+    expect(response.body[0].senderId).toBe(testUser._id);
   });
 
   test("Test update Comment", async () => {
@@ -80,7 +90,9 @@ describe("Comments Tests with Authentication", () => {
         content: "wow this is amazing",
       });
     expect(response.statusCode).toBe(200);
-    const getResponse = await request(app).get(`/comments/${commentId}`).set({ authorization: `JWT ${testUser.token}` });
+    const getResponse = await request(app)
+      .get(`/comments/${commentId}`)
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(getResponse.statusCode).toBe(200);
     expect(getResponse.body.content).toBe("wow this is amazing");
   });
@@ -90,7 +102,7 @@ describe("Comments Tests with Authentication", () => {
       .post("/comments")
       .set({ authorization: `JWT ${testUser.token}` })
       .send({
-        postsId: commentTest.postsId,
+        postId: commentTest.postId,
         content: "Test the comment 2",
         senderId: "TestOwner2",
       });
@@ -98,7 +110,9 @@ describe("Comments Tests with Authentication", () => {
   });
 
   test("Test get all Comments", async () => {
-    const response = await request(app).get("/comments").set({ authorization: `JWT ${testUser.token}` });
+    const response = await request(app)
+      .get("/comments")
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
   });
@@ -111,7 +125,7 @@ describe("Comments Tests with Authentication", () => {
 
     const getResponse = await request(app)
       .get(`/comments/${commentId}`)
-      .set({ authorization: `JWT ${testUser.token}` })
+      .set({ authorization: `JWT ${testUser.token}` });
     expect(getResponse.statusCode).toBe(404);
   });
 });
