@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import commentsModel, { IComments } from "../models/comments_model";
 import BaseController from "./base_controller";
 
-// TODO: add Optional: post ID filter
-
 class CommentsController extends BaseController<IComments> {
   constructor() {
     super(commentsModel);
