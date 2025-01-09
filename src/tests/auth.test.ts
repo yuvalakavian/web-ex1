@@ -226,4 +226,73 @@ describe("Auth Tests", () => {
       });
     expect(response4.statusCode).toBe(201);
   });
+  test("Auth test register missing fields", async () => {
+    const response = await request(app).post(baseUrl + "/register").send({});
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth test register invalid email format", async () => {
+    const response = await request(app)
+      .post(baseUrl + "/register")
+      .send({ ...testUser, email: "invalidEmail" });
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth test login missing fields", async () => {
+    const response = await request(app).post(baseUrl + "/login").send({});
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth test login with unregistered email", async () => {
+    const response = await request(app)
+      .post(baseUrl + "/login")
+      .send({ email: "unknown@user.com", password: "password" });
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth test login invalid password", async () => {
+    const response = await request(app)
+      .post(baseUrl + "/login")
+      .send({ email: testUser.email, password: "wrongpassword" });
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth refresh token invalid token", async () => {
+    const response = await request(app)
+      .post(baseUrl + "/refresh")
+      .send({ refreshToken: "invalidtoken" });
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth logout missing refresh token", async () => {
+    const response = await request(app).post(baseUrl + "/logout").send({});
+    expect(response.statusCode).toBe(400);
+  });
+  
+  test("Auth middleware server error without TOKEN_SECRET", async () => {
+    const originalTokenSecret = process.env.TOKEN_SECRET;
+    delete process.env.TOKEN_SECRET;
+  
+    const response = await request(app)
+      .get("/protected-endpoint")
+      .set({ authorization: `Bearer ${testUser.accessToken}` });
+  
+    process.env.TOKEN_SECRET = originalTokenSecret;
+  
+    expect(response.statusCode).toBe(500);
+  });
+  
+  test("Auth refresh server error without TOKEN_SECRET", async () => {
+    const originalTokenSecret = process.env.TOKEN_SECRET;
+    delete process.env.TOKEN_SECRET;
+  
+    const response = await request(app)
+      .post(baseUrl + "/refresh")
+      .send({ refreshToken: testUser.refreshToken });
+  
+    process.env.TOKEN_SECRET = originalTokenSecret;
+  
+    expect(response.statusCode).toBe(500);
+  });
+  
 });
