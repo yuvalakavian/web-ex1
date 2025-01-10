@@ -11,13 +11,23 @@ import { authMiddleware } from "../controllers/auth_controller";
 */
 
 /**
+* @swagger
+* components:
+*   securitySchemes:
+*     bearerAuth:
+*       type: http
+*       scheme: bearer
+*       bearerFormat: JWT
+*/
+
+/**
  * @swagger
  * components:
  *   schemas:
  *     Comment:
  *       type: object
  *       properties:
- *         postsId:
+ *         postId:
  *           type: string
  *           description: The ID of the post associated with the comment
  *           example: "post123"
@@ -30,19 +40,19 @@ import { authMiddleware } from "../controllers/auth_controller";
  *           description: The ID of the user who created the comment
  *           example: "user456"
  *       required:
- *         - postsId
+ *         - postId
  *         - content
  *         - senderId
  */
 
 /**
  * @swagger
- * /commments/:
+ * /comments/:
  *   get:
  *     summary: Get all comments
  *     tags: [Comments]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of all comments.
@@ -57,12 +67,12 @@ router.get("/", authMiddleware, commentsController.getAll.bind(commentsControlle
 
 /**
  * @swagger
- * comments/{id}:
+ * /comments/{id}:
  *   get:
  *     summary: Get a comment by ID
  *     tags: [Comments]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -83,10 +93,12 @@ router.get("/:id", authMiddleware, commentsController.getById.bind(commentsContr
 
 /**
  * @swagger
- * comments/post/{id}:
+ * /comments/post/{id}:
  *   get:
  *     summary: Get comments by post ID
  *     tags: [Comments]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -110,12 +122,12 @@ router.get("/post/:id", authMiddleware, commentsController.getCommentsByPostId.b
 
 /**
  * @swagger
- * comments/:
+ * /comments/:
  *   post:
  *     summary: Create a new comment
  *     tags: [Comments]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -131,12 +143,12 @@ router.post("/", authMiddleware, commentsController.create.bind(commentsControll
 
 /**
  * @swagger
- * comments/{id}:
+ * /comments/{id}:
  *   put:
  *     summary: Update a comment
  *     tags: [Comments]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -159,12 +171,12 @@ router.put("/:id", authMiddleware, commentsController.updateItem.bind(commentsCo
 
 /**
  * @swagger
- * comments/{id}:
+ * /comments/{id}:
  *   delete:
  *     summary: Delete a comment
  *     tags: [Comments]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path

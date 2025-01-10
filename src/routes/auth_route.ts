@@ -46,7 +46,7 @@ import authController from "../controllers/auth_controller";
 *           description: The user password
 *       example:
 *         email: 'bob@gmail.com'
-*         fullane: 'bob the mob'
+*         fullName: 'bob the mob'
 *         userName: 'john cena'
 *         password: '123456'
 */

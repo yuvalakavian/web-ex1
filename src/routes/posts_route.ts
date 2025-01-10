@@ -11,6 +11,16 @@ import { authMiddleware } from "../controllers/auth_controller";
 */
 
 /**
+* @swagger
+* components:
+*   securitySchemes:
+*     bearerAuth:
+*       type: http
+*       scheme: bearer
+*       bearerFormat: JWT
+*/
+
+/**
  * @swagger
  * components:
  *   schemas:
@@ -37,12 +47,12 @@ import { authMiddleware } from "../controllers/auth_controller";
 
 /**
  * @swagger
- * posts/:
+ * /posts/:
  *   get:
  *     summary: Get all posts
  *     tags: [Posts]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of all posts.
@@ -57,12 +67,12 @@ router.get("/", authMiddleware, postsController.getAll.bind(postsController));
 
 /**
  * @swagger
- * posts/{id}:
+ * /posts/{id}:
  *   get:
  *     summary: Get a post by ID
  *     tags: [Posts]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -83,12 +93,12 @@ router.get("/:id", authMiddleware, postsController.getById.bind(postsController)
 
 /**
  * @swagger
- * posts/:
+ * /posts/:
  *   post:
  *     summary: Create a new post
  *     tags: [Posts]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -103,12 +113,12 @@ router.post("/", authMiddleware, postsController.create.bind(postsController));
 
 /**
  * @swagger
- * posts/{id}:
+ * /posts/{id}:
  *   put:
  *     summary: Update a post
  *     tags: [Posts]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -131,12 +141,12 @@ router.put("/:id", authMiddleware, postsController.updateItem.bind(postsControll
 
 /**
  * @swagger
- * posts/{id}:
+ * /posts/{id}:
  *   delete:
  *     summary: Delete a post
  *     tags: [Posts]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path

@@ -27,6 +27,15 @@ const options = {
       version: "1.0.0",
       description: "REST server including authentication using JWT",
     },
+    components: {
+      securitySchemes: {
+          bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
+          }
+      }
+  },
     servers: [{ url: "http://localhost:3000", },],
   },
   apis: ["./src/routes/*.ts"],

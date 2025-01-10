@@ -11,13 +11,23 @@ import { authMiddleware } from "../controllers/auth_controller";
 */
 
 /**
+* @swagger
+* components:
+*   securitySchemes:
+*     bearerAuth:
+*       type: http
+*       scheme: bearer
+*       bearerFormat: JWT
+*/
+
+/**
  * @swagger
- * users/:
+ * /users/:
  *   get:
  *     summary: Get all users
  *     tags: [Users]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of all users.
@@ -32,12 +42,12 @@ router.get("/", authMiddleware, usersController.getAll.bind(usersController));
 
 /**
  * @swagger
- * users/{id}:
+ * /users/{id}:
  *   get:
  *     summary: Get a user by ID
  *     tags: [Users]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -58,12 +68,12 @@ router.get("/:id", authMiddleware, usersController.getById.bind(usersController)
 
 /**
  * @swagger
- * users/:
+ * /users/:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -78,12 +88,12 @@ router.post("/", authMiddleware, usersController.create.bind(usersController));
 
 /**
  * @swagger
- * users/{id}:
+ * /users/{id}:
  *   put:
  *     summary: Update a user
  *     tags: [Users]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -106,12 +116,12 @@ router.put("/:id", authMiddleware, usersController.updateItem.bind(usersControll
 
 /**
  * @swagger
- * users/{id}:
+ * /users/{id}:
  *   delete:
  *     summary: Delete a user
  *     tags: [Users]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
