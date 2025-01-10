@@ -83,9 +83,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "username": "Test",
+    "userName": "Test",
     "email": "maya@gmail.com",
-    "fullname": "Maya Dahan"
+    "fullName": "Maya Dahan"
 }
 
 ###
@@ -94,9 +94,9 @@ PUT http://localhost:3000/users/6777da40a54dd3733abe5f5d
 Content-Type: application/json
 
 {
-    "username": "test2",
+    "userName": "test2",
     "email": "maya@gmail.com",
-    "fullname": "Maya Maya"
+    "fullName": "Maya Maya"
 }
 
 ###
@@ -110,8 +110,8 @@ Content-Type: application/json
 
 {
     "email": "test@example.com",
-    "username":"johnbon",
-    "fullname": "John Lenon",
+    "userName":"johnbon",
+    "fullName": "John Lenon",
     "password": "password123"
 }
 

@@ -12,7 +12,7 @@ const register = async (req: Request, res: Response) => {
     const user = await userModel.create({
       email: req.body.email,
       userName: req.body.userName,
-      fullname: req.body.fullname,
+      fullName: req.body.fullName,
       password: hashedPassword,
     });
     res.status(200).send(user);
@@ -57,12 +57,12 @@ const login = async (req: Request, res: Response) => {
   try {
     const user = await userModel.findOne({ email: req.body.email });
     if (!user) {
-      res.status(400).send("wrong username or password");
+      res.status(400).send("wrong userName or password");
       return;
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-      res.status(400).send("wrong username or password");
+      res.status(400).send("wrong userName or password");
       return;
     }
     if (!process.env.TOKEN_SECRET) {
