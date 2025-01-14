@@ -12,14 +12,14 @@ const testUser: User = {
   email: "testuser@example.com",
   userName: "testuser",
   password: "testpassword",
-  fullname: "Test User",
+  fullName: "Test User",
 };
 
 const secondUser: User = {
   email: "seconduser@example.com",
   userName: "seconduser",
   password: "secondpassword",
-  fullname: "Second User",
+  fullName: "Second User",
 };
 
 beforeAll(async () => {
@@ -62,7 +62,7 @@ describe("Users Tests with Authentication", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.email).toBe(secondUser.email);
     expect(response.body.userName).toBe(secondUser.userName);
-    expect(response.body.fullname).toBe(secondUser.fullname);
+    expect(response.body.fullName).toBe(secondUser.fullName);
 
     // Check password is encrypted in the database
     const createdUser = await userModel.findById(secondUserId);
@@ -79,21 +79,21 @@ describe("Users Tests with Authentication", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.email).toBe(secondUser.email);
     expect(response.body.userName).toBe(secondUser.userName);
-    expect(response.body.fullname).toBe(secondUser.fullname);
+    expect(response.body.fullName).toBe(secondUser.fullName);
   });
 
   test("Update user", async () => {
     const response = await request(app)
       .put(`/users/${secondUserId}`)
       .set({ authorization: `JWT ${testUser.token}` })
-      .send({ fullname: "Updated User" });
+      .send({ fullName: "Updated User" });
     expect(response.statusCode).toBe(200);
 
     const getResponse = await request(app)
       .get(`/users/${secondUserId}`)
       .set({ authorization: `JWT ${testUser.token}` });
     expect(getResponse.statusCode).toBe(200);
-    expect(getResponse.body.fullname).toBe("Updated User");
+    expect(getResponse.body.fullName).toBe("Updated User");
   });
 
   test("Delete user", async () => {
