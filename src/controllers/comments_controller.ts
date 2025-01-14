@@ -21,12 +21,8 @@ class CommentsController extends BaseController<IComments> {
     const filter = req.params.id;
     try {
       if (filter) {
-        const item = await this.model.find({ postId: filter });
-        if (item.length > 0) {
-          res.send(item);
-        } else {
-          res.status(404).send("not found");
-        }
+        const items = await this.model.find({ postId: filter });
+        res.send(items)
       }
     } catch (error) {
       res.status(400).send(error);

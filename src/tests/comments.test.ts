@@ -82,13 +82,6 @@ describe("Comments Tests with Authentication", () => {
     expect(response.body[0].senderId).toBe(testUser._id);
   });
 
-  test("Test get Comments by post ID with id that doesnt exists", async () => {
-    const response = await request(app)
-      .get(`/comments/post/fakeID`)
-      .set({ authorization: `JWT ${testUser.token}` });
-    expect(response.statusCode).toBe(404);
-  });
-
   test("Test get Comments by post ID without an id", async () => {
     const response = await request(app)
       .get(`/comments/post/`)
