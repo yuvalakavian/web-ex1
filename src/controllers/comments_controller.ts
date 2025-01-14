@@ -22,10 +22,11 @@ class CommentsController extends BaseController<IComments> {
     try {
       if (filter) {
         const item = await this.model.find({ postId: filter });
-        res.send(item);
-      } else {
-        const items = await this.model.find();
-        res.send(items);
+        if (item.length > 0) {
+          res.send(item);
+        } else {
+          res.status(404).send("not found");
+        }
       }
     } catch (error) {
       res.status(400).send(error);
