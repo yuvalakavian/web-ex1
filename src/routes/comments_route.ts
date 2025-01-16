@@ -114,8 +114,6 @@ router.get("/:id", authMiddleware, commentsController.getById.bind(commentsContr
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Comment'
- *       404:
- *         description: Post not found.
  */
 
 router.get("/post/:id", authMiddleware, commentsController.getCommentsByPostId.bind(commentsController))
